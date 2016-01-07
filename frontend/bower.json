@@ -1,0 +1,28 @@
+{
+  "name": "frontend",
+  "description": "Test",
+  //"main": "index.js",
+  "authors": [
+    "David Votrubec"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "David",
+    "Test"
+  ],
+  "moduleType": [
+    "es6"
+  ],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.8"
+  }
+}
