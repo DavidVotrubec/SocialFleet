@@ -7,5 +7,9 @@
 
 module.exports = {
 	
+    login: function(request, response) {
+        console.log("fin test");
+    }
+    
 };
 

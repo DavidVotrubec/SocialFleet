@@ -1,0 +1,40 @@
+{
+  "data": {
+    "user": [
+      {
+        "Name": "David",
+        "createdAt": "2016-01-06T15:27:52.260Z",
+        "updatedAt": "2016-01-06T15:27:52.260Z",
+        "id": 1
+      },
+      {
+        "Name": "Lucka",
+        "Surname": "Votrubcova",
+        "createdAt": "2016-01-06T15:28:11.667Z",
+        "updatedAt": "2016-01-06T15:28:11.667Z",
+        "id": 2
+      }
+    ]
+  },
+  "schema": {
+    "user": {
+      "id": {
+        "type": "integer",
+        "autoIncrement": true,
+        "primaryKey": true,
+        "unique": true
+      },
+      "createdAt": {
+        "type": "datetime"
+      },
+      "updatedAt": {
+        "type": "datetime"
+      }
+    }
+  },
+  "counters": {
+    "user": {
+      "id": 2
+    }
+  }
+}
