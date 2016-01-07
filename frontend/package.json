@@ -5,7 +5,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "David Votrubec",
   "license": "ISC",
-  "description": ""
+  "description": "Test",
+  "keywords": [
+    "David",
+    "Test"
+  ],
+  "dependencies": {
+    "bower": "^1.7.2"
+  },
+  "devDependencies": {
+    "bower": "^1.7.2"
+  }
 }
