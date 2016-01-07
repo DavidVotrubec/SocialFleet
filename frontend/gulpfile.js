@@ -20,10 +20,15 @@ gulp.task('scripts', function(){
     // each has a main files, as listed in the .bower.json
     var tempVendors = gulp.src(mainBowerfiles()).pipe(gulp.dest(paths.tempVendor));
     
+    // reference to all .js files
+    var scripts = gulp.src(['app/*.js', 'app/**/.js']).pipe(gulp.dest(paths.temp));
+    
     // inject vendor files (js and css) into index file
-    tempIndexFile.pipe(inject(tempVendors))
-    // then replace the index file with its updated version
-    .pipe(gulp.dest(paths.temp));
+    tempIndexFile
+        .pipe(inject(scripts, {relative: true, name: 'appInject'}))
+        .pipe(inject(tempVendors, {relative: true, name: 'vendorInject'}))
+        // then replace the index file with its updated version
+        .pipe(gulp.dest(paths.temp));
 });
 
 
