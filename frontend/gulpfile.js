@@ -6,10 +6,12 @@ var inject = require('gulp-inject');
 var paths = {
     temp: 'temp',
     tempVendor: 'temp/vendor',
-    index: 'app/index.html'
+    index: 'app/index.html',
+    app: ['app/*.js', 'app/**/.js'],
+    bower: 'bower_components'
 }
 
-gulp.task('default', ['scripts', 'serve']);
+gulp.task('default', ['scripts', 'serve', 'watch']);
 
 gulp.task('scripts', function(){
     
@@ -21,7 +23,7 @@ gulp.task('scripts', function(){
     var tempVendors = gulp.src(mainBowerfiles()).pipe(gulp.dest(paths.tempVendor));
     
     // reference to all .js files
-    var scripts = gulp.src(['app/*.js', 'app/**/.js']).pipe(gulp.dest(paths.temp));
+    var scripts = gulp.src(paths.app).pipe(gulp.dest(paths.temp));
     
     // inject vendor files (js and css) into index file
     tempIndexFile
@@ -29,6 +31,11 @@ gulp.task('scripts', function(){
         .pipe(inject(tempVendors, {relative: true, name: 'vendorInject'}))
         // then replace the index file with its updated version
         .pipe(gulp.dest(paths.temp));
+});
+
+gulp.task('watch', function(){
+   gulp.watch(paths.app, ['scripts']);
+   gulp.watch(paths.bower + "/**/*", ['scripts']); 
 });
 
 
@@ -40,7 +47,9 @@ gulp.task('serve', function(){
     gulp.src(paths.temp)
     .pipe(webserver({
         // open browser?
-        open: true,
+        //open: true,
+        
+        livereload: true,
         
         // if falsy then it opens the index file located in the .src()
         //directoryListing: true
