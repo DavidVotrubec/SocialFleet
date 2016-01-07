@@ -1,58 +1,69 @@
 var gulp = require('gulp');
 var webserver = require('gulp-webserver');
-var mainBowerfiles = require('main-bower-files');
+var mainBowerFiles = require('main-bower-files');
 var inject = require('gulp-inject');
+var del = require('del');
 
 var paths = {
-    temp: 'temp',
-    tempVendor: 'temp/vendor',
-    index: 'app/index.html',
-    app: ['app/*.js', 'app/**/.js'],
-    bower: 'bower_components/**/*'
-}
+	temp: 'temp',
+	tempVendor: 'temp/vendor',
+	tempIndex: 'temp/index.html',
 
-gulp.task('default', ['scripts', 'serve', 'watch']);
+	index: 'app/index.html',
+	appSrc: 'app/**/*',
+	bowerSrc: 'bower_components/**/*'
+};
 
-gulp.task('scripts', function(){
-    
-    // copy the index file and get reference to it
-    var tempIndexFile = gulp.src(paths.index).pipe(gulp.dest(paths.temp));
-    
-    // mainBowerfiles returns string (array) of installed bower components
-    // each has a main files, as listed in the .bower.json
-    var tempVendors = gulp.src(mainBowerfiles()).pipe(gulp.dest(paths.tempVendor));
-    
-    // reference to all .js files
-    var scripts = gulp.src(paths.app).pipe(gulp.dest(paths.temp));
-    
-    // inject vendor files (js and css) into index file
-    tempIndexFile
-        .pipe(inject(scripts, {relative: true, name: 'appInject'}))
-        .pipe(inject(tempVendors, {relative: true, name: 'vendorInject'}))
-        // then replace the index file with its updated version
-        .pipe(gulp.dest(paths.temp));
+gulp.task('default', ['watch']);
+
+gulp.task('watch', ['serve'], function () {
+	gulp.watch(paths.appSrc, ['scripts']);
+	gulp.watch(paths.bowerSrc, ['vendors']);
 });
 
-gulp.task('watch', function(){
-   gulp.watch(paths.app, ['scripts']);
-   gulp.watch(paths.bower, ['scripts']); 
+gulp.task('serve', ['vendors'], function () {
+	return gulp.src(paths.temp)
+		.pipe(webserver({
+			livereload: true
+		}));
 });
 
+gulp.task('vendors', ['copyVendor', 'scripts'], function () {
 
-/**
- * servers static files
- */
-gulp.task('serve', function(){
-    
-    gulp.src(paths.temp)
-    .pipe(webserver({
-        // open browser?
-        //open: true,
-        
-        livereload: true,
-        
-        // if falsy then it opens the index file located in the .src()
-        //directoryListing: true
-    }));
-    
+	var tempVendors = gulp.src(paths.tempVendor + '/**/*', {
+		read: false
+	});
+
+	return gulp.src(paths.tempIndex)
+		.pipe(inject(tempVendors, {
+			relative: true,
+			name: 'vendorInject'
+		}))
+		.pipe(gulp.dest(paths.temp));
+});
+
+gulp.task('copyVendor', function () {
+	return gulp.src(mainBowerFiles()).pipe(gulp.dest(paths.tempVendor));
+})
+
+gulp.task('scripts', ['copyApp'], function () {
+
+	var appFiles = gulp.src('temp/*', {
+		read: false
+	});
+
+	return gulp.src(paths.tempIndex)
+		.pipe(inject(appFiles, {
+			relative: true,
+            name: 'appInject'
+		}))
+		.pipe(gulp.dest(paths.temp));
+});
+
+gulp.task('copyApp', function () {
+	return gulp.src(paths.appSrc).pipe(gulp.dest(paths.temp));
+})
+
+gulp.task('clean', function (cb) {
+	del([paths.temp], cb);
 });

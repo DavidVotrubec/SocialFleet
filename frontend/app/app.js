@@ -1,1 +1,1 @@
-angular.module('app', ['satellizer']);
+angular.module('app', ['satellizer']); 
