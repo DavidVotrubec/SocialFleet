@@ -8,7 +8,7 @@ var paths = {
     tempVendor: 'temp/vendor',
     index: 'app/index.html',
     app: ['app/*.js', 'app/**/.js'],
-    bower: 'bower_components'
+    bower: 'bower_components/**/*'
 }
 
 gulp.task('default', ['scripts', 'serve', 'watch']);
@@ -35,7 +35,7 @@ gulp.task('scripts', function(){
 
 gulp.task('watch', function(){
    gulp.watch(paths.app, ['scripts']);
-   gulp.watch(paths.bower + "/**/*", ['scripts']); 
+   gulp.watch(paths.bower, ['scripts']); 
 });
 
 
