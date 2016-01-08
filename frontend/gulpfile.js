@@ -25,7 +25,16 @@ gulp.task('watch', ['serve'], function () {
 gulp.task('serve', ['vendors'], function () {
 	return gulp.src(paths.temp)
 		.pipe(webserver({
-			livereload: true
+			livereload: true,
+            
+            // proxy - the request will be handled by sails.js 
+            // listenning on port 1337
+            proxies: [
+                {
+                 source: '/api',
+                 target: 'http://localhost:1337'
+                }
+            ]
 		}));
 });
 
