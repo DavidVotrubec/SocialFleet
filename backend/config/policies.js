@@ -27,6 +27,16 @@ module.exports.policies = {
   ***************************************************************************/
 
   // '*': true,
+  '*': false,
+  
+  PostController : {
+      // expects policy with the same name in the policies folder
+      tweet: ['jwtAuth']
+  },
+  
+  UserController : {
+      login: true
+  }
 
   /***************************************************************************
   *                                                                          *
