@@ -81,33 +81,38 @@ module.exports = {
                     var payload = jwt.decode(token, config.TOKEN_SECRET);
 
                     User.findById(payload.sub, function(err, user) {
-                    if (!user) {
-                        return res.status(400).send({ message: 'User not found' });
-                    }
+                        if (!user) {
+                            return res.status(400).send({ message: 'User not found' });
+                        }
 
-                    user.twitter = profile.id;
-                    user.displayName = user.displayName || profile.name;
-                    user.picture = user.picture || profile.profile_image_url.replace('_normal', '');
-                    user.save(function(err) {
-                        res.send({ token: createJWT(user) });
-                    });
+                        user.twitter = profile.id;
+                        user.displayName = user.displayName || profile.name;
+                        user.picture = user.picture || profile.profile_image_url.replace('_normal', '');
+                        
+                        User.update(user).exec(function(err) {                        
+                            res.send({ token: createToken(user) });
+                        });
                     });
                 });
                 } else {
                 // Step 5b. Create a new user account or return an existing one.
                 User.findOne({ twitter: profile.id }, function(err, existingUser) {
                     if (existingUser) {
-                    return res.send({ token: createJWT(existingUser) });
+                    return res.send({ token: createToken(existingUser) });
                     }
 
-                    var user = new User();
-                    user.twitter = profile.id;
-                    user.displayName = profile.name;
-                    user.picture = profile.profile_image_url.replace('_normal', '');
-                    user.save(function() {
-                    res.send({ token: createJWT(user) });
+                    User.create({
+                        twitter: profile.user_id,
+                        displayName: profile.screen_name
+                    })
+                    .exec(function(err, user){
+                        // callback when user is created in Db
+                        var token = createToken(user);
+                        
+                         res.send({ token: token });
                     });
-                });
+                   
+                   });
                  }
              });
         });
@@ -116,4 +121,18 @@ module.exports = {
     }
     
 };
+
+/*
+ |--------------------------------------------------------------------------
+ | Generate JSON Web Token
+ |--------------------------------------------------------------------------
+ */
+function createToken(user) {
+  var payload = {
+    sub: user.id,
+    iat: moment().unix(),
+    exp: moment().add(14, 'days').unix()
+  };
+  return jwt.encode(payload, config.TOKEN_SECRET);
+}
 
