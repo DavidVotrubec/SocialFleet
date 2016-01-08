@@ -29,6 +29,7 @@ gulp.task('serve', ['vendors'], function () {
             
             // proxy - the request will be handled by sails.js 
             // listenning on port 1337
+            // but it could point to any server
             proxies: [
                 {
                  source: '/api',
