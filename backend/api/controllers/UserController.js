@@ -88,6 +88,8 @@ module.exports = {
                         user.twitter = profile.id;
                         user.displayName = user.displayName || profile.name;
                         user.picture = user.picture || profile.profile_image_url.replace('_normal', '');
+                        user.twitterToken = profile.oauth_token;
+                        user.twitterTokenSecret = profile.oauth_token_secret;
                         
                         User.update(user).exec(function(err) {                        
                             res.send({ token: createToken(user) });
@@ -103,7 +105,9 @@ module.exports = {
 
                     User.create({
                         twitter: profile.user_id,
-                        displayName: profile.screen_name
+                        displayName: profile.screen_name,
+                        twitterToken: profile.oauth_token,
+                        twitterTokenSecret: profile.oauth_token_secret
                     })
                     .exec(function(err, user){
                         // callback when user is created in Db

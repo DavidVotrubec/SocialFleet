@@ -1,5 +1,5 @@
 angular.module('app')
-.controller('LoginCtrl', function($scope, $auth){
+.controller('LoginCtrl', function($scope, $auth, $http){
     
 	$scope.isAuthenticated = $auth.isAuthenticated;
 
@@ -7,6 +7,10 @@ angular.module('app')
         // for some reason this redirects me directly to twitter
 		$auth.authenticate('twitter');
 	}
+
+    $scope.tweet = function(){
+        $http.post('/api/post/tweet', 'some string');
+    }
 
 	$scope.logout = function () {
 		$auth.logout();
