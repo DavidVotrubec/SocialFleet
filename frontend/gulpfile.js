@@ -2,7 +2,6 @@ var gulp = require('gulp');
 var webserver = require('gulp-webserver');
 var mainBowerFiles = require('main-bower-files');
 var inject = require('gulp-inject');
-var del = require('del');
 
 var paths = {
 	temp: 'temp',
@@ -73,8 +72,4 @@ gulp.task('scripts', ['copyApp'], function () {
 
 gulp.task('copyApp', function () {
 	return gulp.src(paths.appSrc).pipe(gulp.dest(paths.temp));
-})
-
-gulp.task('clean', function (cb) {
-	del([paths.temp], cb);
 });
