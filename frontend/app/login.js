@@ -1,6 +1,7 @@
 angular.module('app')
 .controller('LoginCtrl', function($scope, $auth, $http){
     
+    /** $auth.isAuthenticated is actually a method */
 	$scope.isAuthenticated = $auth.isAuthenticated;
 
 	$scope.login = function () {

@@ -13,9 +13,16 @@
     
     <body ng-controller="LoginCtrl">
         
-        <button ng-click="login()" class="btn btn-default">Login</button>
+        <nav class="navbar navbar-default">My test application for Twitter
+            
+            <button ng-if="isAuthenticated()" ng-click="logout()" class="btn btn-link">Logout</button>
+        </nav>
         
-        <button ng-click="tweet()" class="btn btn-primary">Tweet</button>
+        <div class="container">
+            <button ng-if="isAuthenticated() == false" ng-click="login()" class="btn btn-default">Login</button>
+            
+            <button  ng-if="isAuthenticated()" ng-click="tweet()" class="btn btn-primary">Tweet</button>
+        </div>
         
         <!-- vendorInject:js -->
         <!-- endinject -->
