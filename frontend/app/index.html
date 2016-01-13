@@ -20,8 +20,14 @@
         
         <div class="container">
             <button ng-if="isAuthenticated() == false" ng-click="login()" class="btn btn-default">Login</button>
-            
-            <button  ng-if="isAuthenticated()" ng-click="tweet()" class="btn btn-primary">Tweet</button>
+                        
+            <div class="well">
+                <div class="form-group">
+                    <textarea ng-model="message" class="form-control" placeholder="type your message"></textarea>
+                    
+                    <button  ng-if="isAuthenticated()" ng-click="tweet()" class="btn btn-primary">Tweet</button>                    
+                </div>    
+            </div>
         </div>
         
         <!-- vendorInject:js -->

@@ -11,7 +11,7 @@ var config = require('../services/config');
 module.exports = {
     
     tweet: function(req, res){
-        console.log('twwiiiiit');
+        console.log('twwiiiiit', req.body.message);
 
         // todo make use of promise
 
@@ -24,10 +24,13 @@ module.exports = {
                 access_token_secret:  'SOFNu7q2e5pawjzGcvWvUBmV82RV7xuphIaI3aVhSbsCH'
             });
             
-            T.post('statuses/update', { status: '2 Hello Twitter API - https://app.pluralsight.com/library/courses/two-tier-enterprise-app-api-development-angular-sails/table-of-contents' }, function(err, data, response) {
+            T.post('statuses/update', { status: req.body.message }, function(err, data, response) {
                 // console.log('data', data);
                 // console.log('err', err);
                 // console.log('response', response);
+                
+                // It is important to send something to the client !!
+                res.status(200).end();
             });    
         });
 

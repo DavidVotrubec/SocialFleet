@@ -10,7 +10,11 @@ angular.module('app')
 	}
 
     $scope.tweet = function(){
-        $http.post('/api/post/tweet', 'some string');
+        $http.post('/api/post/tweet', {
+            message: $scope.message
+        }).then(function(){
+            
+        });
     }
 
 	$scope.logout = function () {
